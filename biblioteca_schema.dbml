@@ -1,0 +1,35 @@
+// Database Schema for Biblioteca Total
+// Generated from scrapingMejorado.ipynb DDL
+
+Table categories {
+  categoria_id integer [pk, increment]
+  nombre_categoria text [unique, not null]
+}
+
+Table authors {
+  id_autor integer [pk, increment]
+  nombre_autor text [not null]
+  fecha_nacimiento text
+  nacionalidad text
+  external_api_id text
+  total_trabajos_conocidos integer
+  api_source text
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+}
+
+Table books {
+  id_libro integer [pk, increment]
+  titulo_libro text [not null]
+  precio real
+  calificacion text
+  categoria_id integer [not null, ref: > categories.categoria_id]
+}
+
+Table book_author {
+  id_libro integer [not null, ref: > books.id_libro]
+  id_autor integer [not null, ref: > authors.id_autor]
+  
+  indexes {
+    (id_libro, id_autor) [pk]
+  }
+}
