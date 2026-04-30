@@ -1,0 +1,38 @@
+Table categories {
+  id integer [primary key, increment]
+  name text [unique]
+}
+
+Table authors {
+  id integer [primary key, increment]
+  name text [unique]
+  birth_year text
+  country text
+  external_api_id text
+  total_known_works integer
+  api_source text
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+}
+
+Table books {
+  id integer [primary key, increment]
+  title text [unique]
+  price real
+  rating integer
+  category_id integer
+}
+
+// Tabla intermedia para la relación Muchos a Muchos
+Table book_author {
+  book_id integer
+  author_id integer
+  
+  indexes {
+    (book_id, author_id) [pk] // Clave primaria compuesta
+  }
+}
+
+// Definición de Relaciones (Foreign Keys)
+Ref: books.category_id > categories.id // Una categoría tiene muchos libros
+Ref: book_author.book_id > books.id    // Un libro puede tener muchas entradas en book_author
+Ref: book_author.author_id > authors.id // Un autor puede tener muchas entradas en book_author
